@@ -1,10 +1,8 @@
 package ua.nure.yvm.dbtable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.After;
@@ -13,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class DBTableInMemoryInsertTest {
+public class DBTableInMemoryUpdateTest {
 
 	DBTable<Integer> dao = DBTableFabrique.instance();
 	static List<Integer> in;
@@ -33,6 +31,10 @@ public class DBTableInMemoryInsertTest {
 
 	@Before
 	public void setUp() throws Exception {
+		dao.clear();
+		for (Integer integer : in) {
+			dao.insert(integer);
+		}
 	}
 
 	@After
@@ -40,40 +42,19 @@ public class DBTableInMemoryInsertTest {
 	}
 
 	@Test
-	public void testInsert() {
-		for (Integer i : in) {
-			try {
-				dao.insert(i);
-			} catch (DAOException e) {
-				e.printStackTrace();
-			}
-		}
-		Collection<Integer> c = dao.selectAll();
-		for (Integer i : in) {
-			assertTrue(c.contains(i));
-		}
+	public void testUpdate() throws DAOException {
+		dao.update(1, new Integer(20));
+		assertEquals(new Integer(20), dao.get(1));
 	}
 
-	@Test
-	public void testInsertGet() throws DAOException {
-		dao.clear();
-		dao.insert(1);
-		assertEquals(new Integer(1), dao.get(1));
+	@Test(expected = DAOException.class)
+	public void testUpdateWithNull() throws DAOException {
+		dao.update(1, null);
 	}
 	
 	@Test(expected = DAOException.class)
-	public void testInsertGetNotExisted() throws DAOException {
-		dao.clear();
-		dao.insert(1);
-		dao.get(0);
-	}
-	
-	@Test(expected = DAOException.class)
-	public void testInsertWithNull() throws DAOException {
-		for (Integer i : in) {
-			dao.insert(i);
-		}
-		dao.insert(null, null);
+	public void testUpdateNotExisted() throws DAOException {
+		dao.update(30, 1);
 	}
 
 }

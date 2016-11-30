@@ -28,7 +28,7 @@ public interface DBTable<T> {
 	 * @return
 	 * @throws DAOException 
 	 */
-	public void delete(T item, Filter filter) throws DAOException;
+	public void delete(Object item, Filter filter);
 	
 	/**
 	 * Add a object to table 
@@ -45,7 +45,7 @@ public interface DBTable<T> {
 	 * @param name
 	 * @return
 	 */
-	public Collection<T> filter(String pattern, Filter filter);
+	public Collection<T> filter(Object pattern, Filter filter);
 
 	/**
 	 * 
@@ -54,5 +54,11 @@ public interface DBTable<T> {
 	public Collection<T> selectAll();
 
 	public T get(int id) throws DAOException;
+	
+	public void clear();
+	
+	public int size();
+
+	public int[] insert(T... item) throws DAOException;
 
 }
