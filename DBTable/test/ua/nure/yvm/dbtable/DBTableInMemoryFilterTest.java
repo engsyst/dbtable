@@ -1,6 +1,7 @@
 package ua.nure.yvm.dbtable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +47,7 @@ public class DBTableInMemoryFilterTest {
 		}
 	}
 	
-	void setDao() throws DAOException {
+	void setDao()  {
 		dao.clear();
 		dao.insert(in.toArray(new Integer[0]));
 	}
@@ -60,7 +61,7 @@ public class DBTableInMemoryFilterTest {
 	}
 
 	@Test
-	public void testFilter() throws DAOException {
+	public void testFilter() {
 		setIn();
 		setDao();
 		c1.add(new Integer(1));
@@ -74,7 +75,7 @@ public class DBTableInMemoryFilterTest {
 	}
 
 	@Test
-	public void testDeleteFilter() throws DAOException {
+	public void testDeleteFilter() {
 		setIn();
 		setDao();
 		in.remove(new Integer(1));

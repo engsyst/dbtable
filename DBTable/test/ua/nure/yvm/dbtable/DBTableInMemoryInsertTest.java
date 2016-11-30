@@ -2,6 +2,7 @@ package ua.nure.yvm.dbtable;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,11 +43,7 @@ public class DBTableInMemoryInsertTest {
 	@Test
 	public void testInsert() {
 		for (Integer i : in) {
-			try {
 				dao.insert(i);
-			} catch (DAOException e) {
-				e.printStackTrace();
-			}
 		}
 		Collection<Integer> c = dao.selectAll();
 		for (Integer i : in) {
@@ -55,21 +52,21 @@ public class DBTableInMemoryInsertTest {
 	}
 
 	@Test
-	public void testInsertGet() throws DAOException {
+	public void testInsertGet() throws SQLException {
 		dao.clear();
 		dao.insert(1);
 		assertEquals(new Integer(1), dao.get(1));
 	}
 	
-	@Test(expected = DAOException.class)
-	public void testInsertGetNotExisted() throws DAOException {
+	@Test(expected = SQLException.class)
+	public void testInsertGetNotExisted() throws SQLException {
 		dao.clear();
 		dao.insert(1);
 		dao.get(0);
 	}
 	
-	@Test(expected = DAOException.class)
-	public void testInsertWithNull() throws DAOException {
+	@Test(expected = IllegalArgumentException.class)
+	public void testInsertWithNull() {
 		for (Integer i : in) {
 			dao.insert(i);
 		}

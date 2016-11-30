@@ -2,6 +2,7 @@ package ua.nure.yvm.dbtable;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,18 +43,18 @@ public class DBTableInMemoryUpdateTest {
 	}
 
 	@Test
-	public void testUpdate() throws DAOException {
+	public void testUpdate() throws SQLException  {
 		dao.update(1, new Integer(20));
 		assertEquals(new Integer(20), dao.get(1));
 	}
 
-	@Test(expected = DAOException.class)
-	public void testUpdateWithNull() throws DAOException {
+	@Test(expected = NullPointerException.class)
+	public void testUpdateWithNull() throws SQLException {
 		dao.update(1, null);
 	}
 	
-	@Test(expected = DAOException.class)
-	public void testUpdateNotExisted() throws DAOException {
+	@Test(expected = SQLException.class)
+	public void testUpdateNotExisted() throws SQLException {
 		dao.update(30, 1);
 	}
 

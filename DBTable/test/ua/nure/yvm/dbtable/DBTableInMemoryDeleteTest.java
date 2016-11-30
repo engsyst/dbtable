@@ -2,6 +2,7 @@ package ua.nure.yvm.dbtable;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,15 +48,15 @@ public class DBTableInMemoryDeleteTest {
 	}
 
 	@Test
-	public void testDelete() throws DAOException {
+	public void testDelete() throws SQLException {
 		for (int i = 1; i < MAX_COUNT +1; i++) {
 			dao.delete(i);
 		}
 		assertEquals(0, dao.size());
 	}
 
-	@Test(expected = DAOException.class)
-	public void testDeleteNull() throws DAOException {
+	@Test(expected = SQLException.class)
+	public void testDeleteNull() throws SQLException {
 		dao.clear();
 		dao.delete(1);
 	}

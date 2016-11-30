@@ -1,5 +1,6 @@
 package ua.nure.yvm.dbtable;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 public interface DBTable<T> {
@@ -10,16 +11,16 @@ public interface DBTable<T> {
 	 * @return id of object
 	 * @throws DAOException 
 	 */
-	public int insert(T item) throws DAOException;
+	public int insert(T item);
 
 	/**
 	 * Delete object from table 
 	 * 
 	 * @param object
 	 * @return
-	 * @throws DAOException 
+	 * @throws SQLException 
 	 */
-	public T delete(int id) throws DAOException;
+	public T delete(int id) throws SQLException;
 	
 	/**
 	 * Delete all instance of object from table 
@@ -35,9 +36,9 @@ public interface DBTable<T> {
 	 * 
 	 * @param object
 	 * @return
-	 * @throws DAOException 
+	 * @throws SQLException 
 	 */
-	public boolean update(int id, T item) throws DAOException;
+	public boolean update(int id, T item) throws SQLException;
 	
 	/**
 	 * Find object with patter in the table 
@@ -53,12 +54,12 @@ public interface DBTable<T> {
 	 */
 	public Collection<T> selectAll();
 
-	public T get(int id) throws DAOException;
+	public T get(int id) throws SQLException;
 	
 	public void clear();
 	
 	public int size();
 
-	public int[] insert(T... item) throws DAOException;
+	public int[] insert(T... item);
 
 }

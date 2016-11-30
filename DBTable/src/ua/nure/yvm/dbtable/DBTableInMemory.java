@@ -1,5 +1,6 @@
 package ua.nure.yvm.dbtable;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -17,10 +18,10 @@ class DBTableInMemory<T> implements DBTable<T> {
 	private static final Log log = Log.getInstance(Log.INFO, DBTableInMemory.class);
 
 	@Override
-	public int insert(T item) throws DAOException {
+	public int insert(T item) {
 		if (item == null) {
 			log.error("item is null");
-			throw new DAOException("T can not be a null");
+			throw new IllegalArgumentException("T can not be a null");
 		}
 		items.put(++bookIndex, item);
 		log.debug("T added -->" + item);
@@ -28,7 +29,7 @@ class DBTableInMemory<T> implements DBTable<T> {
 	}
 
 	@Override
-	public int[] insert(T... items) throws DAOException {
+	public int[] insert(T... items) {
 		int[] ids = new int[items.length];
 		for (int i = 0; i < items.length; i++) {
 			ids[i] = insert(items[i]);
@@ -37,10 +38,10 @@ class DBTableInMemory<T> implements DBTable<T> {
 	}
 	
 	@Override
-	public T delete(int id) throws DAOException {
+	public T delete(int id) throws SQLException {
 		T t = items.remove(id);
 		if (t == null) {
-			throw new DAOException("Not exist with id --> " + id);
+			throw new SQLException("Not exist with id --> " + id);
 		}
 		log.debug("Removed --> " + t);
 		return t;
@@ -58,15 +59,15 @@ class DBTableInMemory<T> implements DBTable<T> {
 	}
 
 	@Override
-	public boolean update(int id, T item) throws DAOException {
+	public boolean update(int id, T item) throws SQLException {
 		if (item == null) {
 			log.debug("Not found. Id --> " + id);
-			throw new DAOException("Item is null");
+			throw new NullPointerException("Item is null");
 		}
 		T o = items.get(id);
 		if (o == null) {
 			log.debug("Not found. Id --> " + id);
-			throw new DAOException("Not found");
+			throw new SQLException("Not found");
 		}
 		T res = items.put(id, item);
 		log.debug("Found. Updated --> " + res);
@@ -92,11 +93,11 @@ class DBTableInMemory<T> implements DBTable<T> {
 	}
 
 	@Override
-	public T get(int id) throws DAOException {
+	public T get(int id) throws SQLException {
 		T b = items.get(id);
 		if (b == null) {
 			log.debug("Not found --> " + id);
-			throw new DAOException("Not found id = " + id);
+			throw new SQLException("Not found id = " + id);
 		}
 		log.debug("Found --> " + id);
 		return b;
